@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { usePortfolio } from '../contexts/PortfolioContext';
 import Navbar from '../components/Navbar';
 import About from '../components/About';
 import Github from '../components/Github';
 import Experience from '../components/Experience';
 import Education from '../components/Education';
-import Skills from '../components/Skills';
 import Interests from '../components/Interests';
 import Awards from '../components/Awards';
 

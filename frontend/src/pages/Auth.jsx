@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const Auth = () => {
-  const { login, loading, isAuthenticated } = useAuth();  // Destructure login, loading, and isAuthenticated from the useAuth hook
+  const { login, loading, isAuthenticated } = useAuth(); 
 
   const [email, setEmail] = useState('johndoe@example.com');
   const [password, setPassword] = useState('password123');

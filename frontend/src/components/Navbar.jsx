@@ -1,11 +1,11 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState } from 'react';
 import ScrollSpy from './ScrollSpy';
 import { usePortfolio } from '../contexts/PortfolioContext';
 
 const Navbar = () => {
     const { portfolio, githubUserData } = usePortfolio();
-    const sectionIds = ['about', 'experience', 'education', 'interests', 'awards'];
-    const activeSection = ScrollSpy(sectionIds, 100); // Adjust offset as needed
+    const sectionIds = ['about', 'experience', 'education', 'github', 'interests', 'awards'];
+    const activeSection = ScrollSpy(sectionIds, 100);
     const { first_name, last_name } = portfolio;
 
     // State to handle image loading
@@ -14,15 +14,20 @@ const Navbar = () => {
     const handleImageLoad = () => {
         setImageLoaded(true);
     };
+    const handleScrollToSection = (id) => (e) => {
+        e.preventDefault();
+        document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    const currentPath = window.location.pathname;
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
-            <a className="navbar-brand js-scroll-trigger" href="#page-top">
+            <a className="navbar-brand js-scroll-trigger" href="/#page-top">
                 <span className="d-block d-lg-none">
                     {first_name} {last_name}
                 </span>
                 <span className="d-none d-lg-block">
-                    {/* Lazy load image and add skeleton loading */}
                     <div className="img-profile-container">
                         {!isImageLoaded && <div className="skeleton-loader img-skeleton rounded-circle"></div>}
                         <img
@@ -39,14 +44,15 @@ const Navbar = () => {
                 <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarResponsive">
-                <ul className="navbar-nav">
+                {(currentPath === '/dashboard') ? <ul className="navbar-nav mt-3"><li className="nav-item"><a className="nav-link js-scroll-trigger" href="/">Home</a></li></ul> : <ul className="navbar-nav">
                     {sectionIds.map((id) => (
                         <li key={id} className={activeSection === id ? 'active nav-item' : 'nav-item'}>
-                            <a className="nav-link js-scroll-trigger">{id.charAt(0).toUpperCase() + id.slice(1)}</a>
+                            <a className="nav-link js-scroll-trigger" href={`#${id}`} onClick={handleScrollToSection(id)}>{id.charAt(0).toUpperCase() + id.slice(1)}</a>
                         </li>
                     ))}
                     <li className="nav-item"><a className="nav-link js-scroll-trigger" href="/auth">Auth</a></li>
-                </ul>
+                </ul>}
+
             </div>
         </nav>
     );

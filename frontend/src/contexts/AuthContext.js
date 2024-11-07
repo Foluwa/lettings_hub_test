@@ -13,8 +13,6 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      // localStorage.setItem('token', token);
-      // api.defaults.headers.Authorization = `Bearer ${token}`;
       const token = localStorage.getItem('token');
       api.defaults.headers.Authorization = `Bearer ${token}`;
       const userResponse = await api.get('/api/v1/users/me');
@@ -24,30 +22,6 @@ export const AuthProvider = ({ children }) => {
       console.error('Failed to fetch user:', error);
     }
   };
-
-
-  // const login = async (formData) => {
-  //   setLoading(true);
-  //   try {
-  //     const response = await api.post('/api/v1/users/login', formData, {
-  //       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  //     });
-  //     const token = response.data.access_token;
-  //     setToken(token);
-  //     localStorage.setItem('token', token);
-  //     api.defaults.headers.Authorization = `Bearer ${token}`;
-
-  //     const userResponse = await api.get('/api/v1/users/me');
-  //     setUser(userResponse.data);
-
-  //     navigate('/dashboard');
-  //   } catch (error) {
-  //     console.error('Login failed:', error);
-  //     throw error;
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const login = async (formData) => {
     setLoading(true);
@@ -60,7 +34,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('token', token);
       api.defaults.headers.Authorization = `Bearer ${token}`;
 
-      await fetchUser();  // Fetch user data after setting the token
+      await fetchUser();
       navigate('/dashboard');
     } catch (error) {
       console.error('Login failed:', error);

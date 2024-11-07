@@ -3,7 +3,7 @@ import { usePortfolio } from '../contexts/PortfolioContext';
 import ResumeSection from './ResumeSection';
 
 const Interests = () => {
-  const { portfolio, loading, error } = usePortfolio();
+  const { portfolio } = usePortfolio();
   const { interests } = portfolio;
   return (
     <ResumeSection id="interests" title="Interests">

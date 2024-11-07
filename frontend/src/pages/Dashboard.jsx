@@ -16,7 +16,26 @@ const skillOptions = [
   { value: 'React', label: 'React' },
   { value: 'Node.js', label: 'Node.js' },
   { value: 'Django', label: 'Django' },
-  { value: 'SQL', label: 'SQL' }
+  { value: 'SQL', label: 'SQL' },
+  { value: 'TypeScript', label: 'TypeScript' },
+  { value: 'HTML', label: 'HTML' },
+  { value: 'CSS', label: 'CSS' },
+  { value: 'Ruby on Rails', label: 'Ruby on Rails' },
+  { value: 'PHP', label: 'PHP' },
+  { value: 'Java', label: 'Java' },
+  { value: 'C#', label: 'C#' },
+  { value: 'Go', label: 'Go' },
+  { value: 'Swift', label: 'Swift' },
+  { value: 'Kotlin', label: 'Kotlin' },
+  { value: 'Angular', label: 'Angular' },
+  { value: 'Vue.js', label: 'Vue.js' },
+  { value: 'GraphQL', label: 'GraphQL' },
+  { value: 'MongoDB', label: 'MongoDB' },
+  { value: 'PostgreSQL', label: 'PostgreSQL' },
+  { value: 'Firebase', label: 'Firebase' },
+  { value: 'AWS', label: 'AWS' },
+  { value: 'Azure', label: 'Azure' },
+  { value: 'GCP', label: 'GCP' },
 ];
 
 const Dashboard = () => {
@@ -231,7 +250,7 @@ const Dashboard = () => {
                 setCertifications={(certifications) => handleInputChange('certifications', certifications)}
               />
               <hr className="my-4" />
-              <button className="w-100 btn btn-primary btn-lg" type="submit" disabled={loading}>
+              <button className="w-100 btn btn-primary btn-lg text-white" type="submit" disabled={loading}>
                 {loading ? 'Saving...' : 'Update Portfolio'}
               </button>
             </form>

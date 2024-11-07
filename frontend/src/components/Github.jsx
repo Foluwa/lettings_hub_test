@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { usePortfolio } from '../contexts/PortfolioContext';
 import ResumeSection from './ResumeSection';
 import { extractGithubUsername } from '../utils/utility';
@@ -6,14 +6,16 @@ import { extractGithubUsername } from '../utils/utility';
 const Github = ({ url }) => {
     console.log({ url });
     const { githubUserData, githubUserRepos, fetchGitHubUserData, fetchGitHubUserRepos, loading, error } = usePortfolio();
-    const username = extractGithubUsername(url);
-    console.log('userName:', username);
+    // Memoize the username to avoid recalculating it on each render
+    const username = useMemo(() => extractGithubUsername(url), [url]);
+    const [dataLoaded, setDataLoaded] = useState(false);
 
     useEffect(() => {
-        if (username) {
+        if (username && !dataLoaded) {
             console.log('Fetching GitHub data for:', username);
             fetchGitHubUserData(username);
             fetchGitHubUserRepos(username, 1);
+            setDataLoaded(true);
         }
     }, [username]);
 
