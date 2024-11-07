@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from app.api.v1.api import router as api_router
 from app.db.init_db import init_db
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 origins = [
@@ -16,6 +17,10 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
 )
 
+# Mount the React `build` directory as static files
+app.mount("/", StaticFiles(directory="frontend/build", html=True), name="static")
+
+
 # Initialize the database
 @app.on_event("startup")
 def startup_event():
@@ -24,6 +29,8 @@ def startup_event():
 @app.get("/")
 def root():
     return {"message": "The Lettings Hub API is live!"}
+
+
 
 # Include API routes
 app.include_router(api_router, prefix="/api/v1")

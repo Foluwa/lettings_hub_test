@@ -1,14 +1,9 @@
 services:
-  - name: my-fastapi-backend
+  - name: my-app
     type: web
     env: python
-    buildCommand: "pip install -r backend/requirements.txt"
-    startCommand: "uvicorn backend.app.main:app --host 0.0.0.0 --port 8000"
-    plan: free
-
-  - name: my-react-frontend
-    type: web
-    env: node
-    buildCommand: "cd frontend && npm install && npm run build"
-    startCommand: "npx serve -s frontend/build -l 3000"
+    buildCommand: |
+      cd frontend && npm install && npm run build && cd ..
+      pip install -r backend/requirements.txt
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port 8000"
     plan: free
