@@ -5,6 +5,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { PortfolioProvider } from './contexts/PortfolioContext';
 import Home from './pages/Home';
 import Auth from './pages/Auth';
+import NotFound from './pages/NotFound';
 import Dashboard from './pages/Dashboard';
 import './assets/css/styles.css';
 
@@ -18,6 +19,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
 
           <Toaster />

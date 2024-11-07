@@ -1,66 +1,70 @@
-// src/pages/Dashboard.js
-import React, { useEffect } from 'react';
-// import { useAuth } from '../contexts/AuthContext';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { usePortfolio } from '../contexts/PortfolioContext';
 import Navbar from '../components/Navbar';
-import api from '../services/api';
 import WorkExperienceInput from '../components/WorkExperienceInput';
 import EducationInput from '../components/EducationInput';
 import CertificationInput from '../components/CertificationInput';
 import { extractGithubUsername } from '../utils/utility';
 import toast from 'react-hot-toast';
+import Select from 'react-select';
+
+const skillOptions = [
+  { value: 'JavaScript', label: 'JavaScript' },
+  { value: 'Python', label: 'Python' },
+  { value: 'React', label: 'React' },
+  { value: 'Node.js', label: 'Node.js' },
+  { value: 'Django', label: 'Django' },
+  { value: 'SQL', label: 'SQL' }
+];
 
 const Dashboard = () => {
-  const { user, fetchUser } = useAuth();
+  const { user, fetchUser, token, logout } = useAuth();
   const navigate = useNavigate();
   const { portfolio, setPortfolio, updatePortfolio, loading, error, fetchGitHubUserData, fetchGitHubUserRepos } = usePortfolio();
-  const { github } = portfolio;
-  const username = extractGithubUsername(github);
 
+  const [initialLoad, setInitialLoad] = useState(true);
+
+  // Memoize GitHub username extraction to prevent repeated calculations
+  const username = useMemo(() => portfolio.github && extractGithubUsername(portfolio.github), [portfolio.github]);
+
+  // Check for token on initial load, fetch user data if needed
   useEffect(() => {
-    if (username) {
-      console.log('Fetching GitHub data for:', username);
+    if (!token) {
+      navigate('/auth');
+    } else if (!user) {
+      fetchUser().catch(() => navigate('/auth'));
+    }
+  }, [user, token, navigate, fetchUser]);
+
+  // Only fetch GitHub data once when username changes
+  useEffect(() => {
+    if (username && initialLoad) {
       fetchGitHubUserData(username);
-      fetchGitHubUserRepos(username, 1);  
+      fetchGitHubUserRepos(username, 1); 
+      setInitialLoad(false);
     }
-  }, [username]);
-
-
-  useEffect(() => {
-    if (!user) {
-      // navigate('/auth');
-      fetchUser();
-    }
-  }, [user, navigate]);
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   // setLoading(true);
-  //   try {
-  //     const response = portfolio.id
-  //       ? await api.put('/portfolios/', portfolio)
-  //       : await api.post('/portfolios/', portfolio);
-  //     setPortfolio(response.data);
-  //     alert('Portfolio saved successfully');
-  //   } catch (error) {
-  //     console.error('Failed to save portfolio:', error);
-  //   } finally {
-  //     // setLoading(false);
-  //   }
-  // };
+  }, [username, initialLoad, fetchGitHubUserData, fetchGitHubUserRepos]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await updatePortfolio(portfolio);
-    toast('Portfolio updated successfully');
+    try {
+      await updatePortfolio(portfolio);
+      toast('Portfolio updated successfully');
+    } catch (err) {
+      console.error("Error updating portfolio:", err);
+    }
   };
 
   const handleInputChange = (field, value) => {
     setPortfolio((prevPortfolio) => ({ ...prevPortfolio, [field]: value }));
   };
 
+  const handleSkillsChange = (selectedOptions) => {
+    const skills = selectedOptions.map(option => option.value);
+    setPortfolio((prevPortfolio) => ({ ...prevPortfolio, skills }));
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -69,7 +73,6 @@ const Dashboard = () => {
   if (error) {
     return <div>Error: {error}</div>;
   }
-
 
   console.log({ user });
   console.log({ portfolio });
@@ -101,6 +104,17 @@ const Dashboard = () => {
                   <h6 className="my-0">Email </h6>
                 </div>
                 <span className="text-muted">{user?.email}</span>
+              </li>
+
+              <li className="list-group-item d-flex justify-content-between lh-sm">
+                <div>
+                  <h6 className="my-0">Logout </h6>
+                </div>
+                <button className="btn btn-danger mt-2 btn-sm w-50" type="button" onClick={() => {
+                  if (window.confirm("Are you sure you want to log out?")) {
+                    logout();
+                  }
+                }}>Logout</button>
               </li>
             </ul>
 
@@ -141,19 +155,64 @@ const Dashboard = () => {
                     Valid last name is required.
                   </div>
                 </div>
-                <div className="col-12 mb-4">
+                <div className="col-12">
                   <label htmlFor="email" className="form-label">
-                    Email <span className="text-muted">(Optional)</span>
+                    Location
                   </label>
                   <input
-                    type="email"
+                    type="text"
                     className="form-control"
                     id="email"
-                    placeholder="you@example.com"
+                    placeholder="Location"
+                    value={portfolio.location}
+                    onChange={(e) => handleInputChange('location', e.target.value)}
+                    required
                   />
                   <div className="invalid-feedback">
-                    Please enter a valid email address for shipping updates.
+                    Please enter a valid location
                   </div>
+                </div>
+
+                <div className="col-12">
+                  <label htmlFor="about" className="form-label">
+                    About
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="about"
+                    placeholder="Location"
+                    value={portfolio.about}
+                    onChange={(e) => handleInputChange('about', e.target.value)}
+                    required
+                  />
+                  <div className="invalid-feedback">
+                    Please enter a valid location
+                  </div>
+                </div>
+
+
+                <div className="col-12 mb-4">
+
+                  <label className="form-label">Interests</label>
+                  <textarea
+                    className="form-control"
+                    placeholder="Enter your interests"
+                    value={portfolio.interests}
+                    onChange={(e) => setPortfolio({ ...portfolio, interests: e.target.value })}
+                  />
+
+                </div>
+                <div className="col-12 mb-4">
+                  <label>Skills</label>
+                  <Select
+                    options={skillOptions}
+                    isMulti
+                    value={portfolio.skills.map(skill => ({ value: skill, label: skill }))}
+                    onChange={handleSkillsChange}
+                    placeholder="Select skills"
+                    className="multi-select"
+                  />
                 </div>
               </div>
               <EducationInput
@@ -165,74 +224,13 @@ const Dashboard = () => {
                 workExperience={portfolio.work_experience || []}
                 setWorkExperience={(work_experience) => handleInputChange('work_experience', work_experience)}
               />
-              {/* <div className="row gy-3">
-                <div className="col-md-6">
-                  <label htmlFor="cc-name" className="form-label">
-                    Name on card
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="cc-name"
-                    placeholder=""
-                    required=""
-                  />
-                  <small className="text-muted">
-                    Full name as displayed on card
-                  </small>
-                  <div className="invalid-feedback">Name on card is required</div>
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="cc-number" className="form-label">
-                    Credit card number
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="cc-number"
-                    placeholder=""
-                    required=""
-                  />
-                  <div className="invalid-feedback">
-                    Credit card number is required
-                  </div>
-                </div>
-                <div className="col-md-3">
-                  <label htmlFor="cc-expiration" className="form-label">
-                    Expiration
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="cc-expiration"
-                    placeholder=""
-                    required=""
-                  />
-                  <div className="invalid-feedback">Expiration date required</div>
-                </div>
-                <div className="col-md-3">
-                  <label htmlFor="cc-cvv" className="form-label">
-                    CVV
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="cc-cvv"
-                    placeholder=""
-                    required=""
-                  />
-                  <div className="invalid-feedback">Security code required</div>
-                </div>
-              </div> */}
+
               <hr className="my-4" />
               <CertificationInput
                 certifications={portfolio.certifications || []}
                 setCertifications={(certifications) => handleInputChange('certifications', certifications)}
               />
               <hr className="my-4" />
-              {/* <button className="w-100 btn btn-primary btn-lg" type="submit">
-                Continue to checkout
-              </button> */}
               <button className="w-100 btn btn-primary btn-lg" type="submit" disabled={loading}>
                 {loading ? 'Saving...' : 'Update Portfolio'}
               </button>

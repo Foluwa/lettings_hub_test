@@ -13,15 +13,12 @@ const Github = ({ url }) => {
         if (username) {
             console.log('Fetching GitHub data for:', username);
             fetchGitHubUserData(username);
-            fetchGitHubUserRepos(username, 1);  // Fetch the first page of repos
+            fetchGitHubUserRepos(username, 1);
         }
     }, [username]);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
-
-    console.log({ githubUserData });
-    console.log({ githubUserRepos });
 
     return (
         <ResumeSection id="github" title="GitHub User Profile">
