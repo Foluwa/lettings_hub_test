@@ -2,7 +2,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "sqlite:///./test.db" # SQLite database URL
+# SQLite database URL
+DATABASE_URL = "sqlite:///./test.db" 
 
 # Set up the database engine
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})

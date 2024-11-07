@@ -1,4 +1,4 @@
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, HttpUrl, Field
 from typing import List, Optional
 from datetime import datetime
 
@@ -6,7 +6,7 @@ class Education(BaseModel):
     school_name: str
     degree_name: str
     year: int
-    gpa: Optional[float] = None
+    gpa: float #Optional[float] = None
 
 class WorkExperience(BaseModel):
     role: str

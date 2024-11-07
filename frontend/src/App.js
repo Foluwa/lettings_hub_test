@@ -1,33 +1,32 @@
 import React from 'react';
-import Navbar from './components/Navbar';
-import About from './components/About';
-import Experience from './components/Experience';
-import Education from './components/Education';
-import Skills from './components/Skills';
-import Interests from './components/Interests';
-import Awards from './components/Awards';
-// import './App.css';
+import { Toaster } from 'react-hot-toast';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import { PortfolioProvider } from './contexts/PortfolioContext';
+import Home from './pages/Home';
+import Auth from './pages/Auth';
+import Dashboard from './pages/Dashboard';
 import './assets/css/styles.css';
 
-function App() {
+const App = () => {
   return (
-    <div id="page-top">
-      <Navbar />
-      <div className="container-fluid p-0">
-        <About />
-        <hr className="m-0" />
-        <Experience />
-        <hr className="m-0" />
-        <Education />
-        <hr className="m-0" />
-        <Skills />
-        <hr className="m-0" />
-        <Interests />
-        <hr className="m-0" />
-        <Awards />
-      </div>
-    </div>
+    <Router>
+      <AuthProvider>
+        <PortfolioProvider>
+
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Routes>
+
+          <Toaster />
+        </PortfolioProvider>
+      </AuthProvider>
+    </Router>
   );
-}
+};
 
 export default App;
+
+

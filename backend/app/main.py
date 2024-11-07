@@ -1,8 +1,20 @@
 from fastapi import FastAPI
 from app.api.v1.api import router as api_router
 from app.db.init_db import init_db
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+origins = [
+    "*",  # TODO remember to remove this when deploying to production
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, PUT, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 # Initialize the database
 @app.on_event("startup")
