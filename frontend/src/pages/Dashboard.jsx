@@ -256,7 +256,8 @@ const Dashboard = () => {
                       onChange={(e) => handleInputChange('linkedin', e.target.value)}
                       required
                     />
-                  </div>                  <div className="col-4">
+                  </div>                  
+                  <div className="col-4">
                     <label htmlFor="twitter" className="form-label">
                       X(formerly Twitter)
                     </label>
@@ -264,7 +265,7 @@ const Dashboard = () => {
                       type="url"
                       className="form-control"
                       id="twitter"
-                      placeholder="Github"
+                      placeholder="Twitter"
                       value={portfolio.twitter}
                       onChange={(e) => handleInputChange('twitter', e.target.value)}
                       required

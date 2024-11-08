@@ -5,8 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 origins = [
-    "*",  #TODO remember to remove this when deploying to production
-    "http://localhost",
+    # "*",  #TODO remember to remove this when deploying to production
     "http://localhost:3000",
     "https://lettings-hub-test-padn.onrender.com"
 ]
@@ -15,8 +14,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all methods (GET, POST, PUT, etc.)
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["*"],  
+    allow_headers=["*"],  
 )
 
 # Initialize the database
