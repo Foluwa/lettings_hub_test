@@ -26,11 +26,11 @@ class Portfolio(Base):
     last_name = Column(String, index=True)
     location = Column(String)
     about = Column(String)
-    education = Column(String)  # Will store JSON serialized string
-    work_experience = Column(String)  # Will store JSON serialized string
-    skills = Column(String)  # Will store JSON serialized string
+    education = Column(String) 
+    work_experience = Column(String) 
+    skills = Column(String) 
     interests = Column(String)
-    certifications = Column(String)  # Will store JSON serialized string
+    certifications = Column(String) 
     github = Column(String, nullable=True)
     linkedin = Column(String, nullable=True)
     twitter = Column(String, nullable=True)
@@ -41,7 +41,6 @@ class Portfolio(Base):
     owner = relationship("User", back_populates="portfolios")
 
     def serialize(self):
-        # Serialize only if these fields are lists, otherwise leave as-is
         if isinstance(self.education, list):
             self.education = json.dumps(self.education)
         if isinstance(self.work_experience, list):
@@ -52,7 +51,6 @@ class Portfolio(Base):
             self.certifications = json.dumps(self.certifications)
 
     def deserialize(self):
-        # Deserialize only if these fields are JSON strings, otherwise leave as-is
         if isinstance(self.education, str):
             self.education = json.loads(self.education)
         if isinstance(self.work_experience, str):
