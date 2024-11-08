@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setToken(null);
     delete api.defaults.headers.Authorization;
-    navigate('/');  // Redirect to login after logout
+    navigate('/');  
   };
 
   const isAuthenticated = useCallback(() => {

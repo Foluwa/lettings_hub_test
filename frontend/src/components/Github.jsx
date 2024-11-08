@@ -5,7 +5,6 @@ import { extractGithubUsername } from '../utils/utility';
 
 const Github = ({ url }) => {
     const { githubUserData, githubUserRepos, fetchGitHubUserData, fetchGitHubUserRepos, loading, error } = usePortfolio();
-    // Memoize the username to avoid recalculating it on each render
     const username = useMemo(() => extractGithubUsername(url), [url]);
     const [dataLoaded, setDataLoaded] = useState(false);
 
