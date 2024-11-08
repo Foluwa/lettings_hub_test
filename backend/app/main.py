@@ -2,6 +2,10 @@ from fastapi import FastAPI
 from app.api.v1.api import router as api_router
 from app.db.init_db import init_db
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = FastAPI()
 origins = [
