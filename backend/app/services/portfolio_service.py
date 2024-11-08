@@ -3,8 +3,6 @@ from sqlalchemy.orm import Session
 from app.db import models
 from app.schemas.portfolio import PortfolioCreate, PortfolioUpdate
 from datetime import datetime
-from pydantic import HttpUrl
-from typing import Union
 
 def get_portfolio(db: Session):
     portfolio = db.query(models.Portfolio).first()
@@ -45,7 +43,7 @@ def update_portfolio(db: Session, portfolio_data: PortfolioUpdate):
                 value = json.dumps([item.dict() if hasattr(item, "dict") else item for item in value])
         elif field == "skills":
             value = json.dumps(value)  
-        elif field in ["github", "linkedin", "twitter"] and isinstance(value, Union[HttpUrl, str]):
+        elif field in ["github", "linkedin", "twitter"] and value is not None:
             value = str(value)
         setattr(db_portfolio, field, value)
 

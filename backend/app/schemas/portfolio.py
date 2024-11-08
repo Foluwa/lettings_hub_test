@@ -1,12 +1,13 @@
-from pydantic import BaseModel, HttpUrl, Field
+from pydantic import BaseModel, validator
 from typing import List, Optional
 from datetime import datetime
+from urllib.parse import urlparse
 
 class Education(BaseModel):
     school_name: str
     degree_name: str
     year: int
-    gpa: float #Optional[float] = None
+    gpa: float  # Optional[float] = None
 
 class WorkExperience(BaseModel):
     role: str
@@ -16,7 +17,15 @@ class WorkExperience(BaseModel):
 
 class Certification(BaseModel):
     name: str
-    url: Optional[HttpUrl] = None
+    url: Optional[str] = None
+
+    @validator('url', pre=True, always=True)
+    def validate_url(cls, value):
+        if value:
+            parsed_url = urlparse(value)
+            if not all([parsed_url.scheme, parsed_url.netloc]):
+                raise ValueError("Invalid URL format")
+        return value
 
 class PortfolioBase(BaseModel):
     first_name: str
@@ -28,9 +37,17 @@ class PortfolioBase(BaseModel):
     skills: List[str]
     interests: str
     certifications: List[Certification]
-    github: Optional[HttpUrl] = None
-    linkedin: Optional[HttpUrl] = None
-    twitter: Optional[HttpUrl] = None
+    github: Optional[str] = None
+    linkedin: Optional[str] = None
+    twitter: Optional[str] = None
+
+    @validator("github", "linkedin", "twitter", pre=True, always=True)
+    def validate_social_url(cls, value):
+        if value:
+            parsed_url = urlparse(value)
+            if not all([parsed_url.scheme, parsed_url.netloc]):
+                raise ValueError("Invalid URL format")
+        return value
 
 class PortfolioCreate(PortfolioBase):
     pass
@@ -45,9 +62,17 @@ class PortfolioUpdate(BaseModel):
     skills: Optional[List[str]] = None
     interests: Optional[str] = None
     certifications: Optional[List[Certification]] = None
-    github: Optional[HttpUrl] = None
-    linkedin: Optional[HttpUrl] = None
-    twitter: Optional[HttpUrl] = None
+    github: Optional[str] = None
+    linkedin: Optional[str] = None
+    twitter: Optional[str] = None
+
+    @validator("github", "linkedin", "twitter", pre=True, always=True)
+    def validate_social_url(cls, value):
+        if value:
+            parsed_url = urlparse(value)
+            if not all([parsed_url.scheme, parsed_url.netloc]):
+                raise ValueError("Invalid URL format")
+        return value
 
 class PortfolioResponse(PortfolioBase):
     id: int
