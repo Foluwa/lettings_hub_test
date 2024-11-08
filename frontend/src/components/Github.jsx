@@ -4,7 +4,6 @@ import ResumeSection from './ResumeSection';
 import { extractGithubUsername } from '../utils/utility';
 
 const Github = ({ url }) => {
-    console.log({ url });
     const { githubUserData, githubUserRepos, fetchGitHubUserData, fetchGitHubUserRepos, loading, error } = usePortfolio();
     // Memoize the username to avoid recalculating it on each render
     const username = useMemo(() => extractGithubUsername(url), [url]);
@@ -12,10 +11,8 @@ const Github = ({ url }) => {
 
     useEffect(() => {
         if (username && !dataLoaded) {
-            console.log('Fetching GitHub data for:', username);
             fetchGitHubUserData(username);
             fetchGitHubUserRepos(username, 1);
-            console.log('GitHub data fetched');
             setDataLoaded(true);
         }
     }, [username]);

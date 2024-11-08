@@ -30,7 +30,6 @@ const Auth = () => {
       await login(formData);
       navigate('/dashboard');
     } catch (err) {
-      console.log(err.response.data.detail);
       toast.error(err.response.data.detail);
     }
   };

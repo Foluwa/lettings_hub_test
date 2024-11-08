@@ -65,7 +65,6 @@ export const PortfolioProvider = ({ children }) => {
   };
 
   const updatePortfolio = async (updatedPortfolio) => {
-    console.log({ updatedPortfolio });
     try {
       const response = updatedPortfolio.id
         ? await api.put('/api/v1/portfolios/', updatedPortfolio, {

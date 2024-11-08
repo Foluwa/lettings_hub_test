@@ -7,7 +7,7 @@ class Education(BaseModel):
     school_name: str
     degree_name: str
     year: int
-    gpa: float  # Optional[float] = None
+    gpa: float  
 
 class WorkExperience(BaseModel):
     role: str

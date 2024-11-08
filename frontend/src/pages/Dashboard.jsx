@@ -93,9 +93,6 @@ const Dashboard = () => {
     return <div>Error: {error}</div>;
   }
 
-  console.log({ user });
-  console.log({ portfolio });
-
   return (
     <div id="page-top">
       <Navbar />

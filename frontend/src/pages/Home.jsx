@@ -20,10 +20,6 @@ const Home = () => {
         return <div>Error: {error}</div>;
     }
 
-    console.log({ portfolio })
-    console.log({ loading })
-    console.log({ error })
-
     return (
         <div id="page-top">
             <Navbar />
@@ -35,8 +31,6 @@ const Home = () => {
                 <Experience experiences={portfolio.work_experience} />
                 <hr className="m-0" />
                 <Education education={portfolio.education} />
-                {/* <hr className="m-0" />
-                <Skills skills={portfolio.skills} /> */}
                 <hr className="m-0" />
                 <Github url={portfolio?.github} />
                 <hr className="m-0" />
