@@ -6,6 +6,9 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 origins = [
     "*",  #TODO remember to remove this when deploying to production
+    "http://localhost",
+    "http://localhost:3000",
+    "https://lettings-hub-test-padn.onrender.com"
 ]
 
 app.add_middleware(
