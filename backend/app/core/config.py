@@ -1,5 +1,5 @@
 import os
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
-JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "your-secret-key")
+JWT_ALGORITHM = "HS256"

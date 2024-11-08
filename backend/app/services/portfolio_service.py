@@ -33,10 +33,34 @@ def create_or_update_portfolio(db: Session, portfolio_data: PortfolioCreate):
     db_portfolio.deserialize() 
     return db_portfolio
 
+# def update_portfolio(db: Session, portfolio_data: PortfolioUpdate):
+#     db_portfolio = get_portfolio(db)
+#     if not db_portfolio:
+#         return None
+
+#     for field, value in portfolio_data.dict(exclude_unset=True).items():
+#         if field in ["education", "work_experience", "certifications"]:
+#             if value and isinstance(value, list):
+#                 value = json.dumps([item.dict() if hasattr(item, "dict") else item for item in value])
+#         elif field == "skills":
+#             value = json.dumps(value)  
+#         elif isinstance(value, HttpUrl):
+#             value = str(value)
+#         setattr(db_portfolio, field, value)
+
+#     db_portfolio.updated_at = datetime.utcnow()
+#     db.commit()
+#     db.refresh(db_portfolio)
+#     db_portfolio.deserialize()  
+#     return db_portfolio
+
 def update_portfolio(db: Session, portfolio_data: PortfolioUpdate):
     db_portfolio = get_portfolio(db)
     if not db_portfolio:
         return None
+    
+    print(portfolio_data.dict(exclude_unset=True))
+    print('portfolio_data: ', portfolio_data)
 
     for field, value in portfolio_data.dict(exclude_unset=True).items():
         if field in ["education", "work_experience", "certifications"]:
@@ -44,7 +68,8 @@ def update_portfolio(db: Session, portfolio_data: PortfolioUpdate):
                 value = json.dumps([item.dict() if hasattr(item, "dict") else item for item in value])
         elif field == "skills":
             value = json.dumps(value)  
-        elif isinstance(value, HttpUrl):
+        elif field in ["github", "linkedin", "twitter"] and value is not None:
+            # Convert URL fields to strings
             value = str(value)
         setattr(db_portfolio, field, value)
 
