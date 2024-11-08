@@ -234,7 +234,7 @@ const Dashboard = () => {
                       Github
                     </label>
                     <input
-                      type="url"
+                      type="text"
                       className="form-control"
                       id="github"
                       placeholder="Github"
@@ -248,7 +248,7 @@ const Dashboard = () => {
                       Linkedin
                     </label>
                     <input
-                      type="url"
+                      type="text"
                       className="form-control"
                       id="linkedin"
                       placeholder="Linkedin"
@@ -262,7 +262,7 @@ const Dashboard = () => {
                       X(formerly Twitter)
                     </label>
                     <input
-                      type="url"
+                      type="text"
                       className="form-control"
                       id="twitter"
                       placeholder="Twitter"

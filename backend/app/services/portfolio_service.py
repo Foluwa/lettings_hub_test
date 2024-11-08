@@ -3,11 +3,11 @@ from app.db import models
 from app.schemas.portfolio import PortfolioCreate, PortfolioUpdate
 from datetime import datetime
 import json
+from pydantic import HttpUrl
 
 def get_portfolio(db: Session):
     portfolio = db.query(models.Portfolio).first()
     if portfolio:
-        # Deserialize JSON fields after loading
         portfolio.deserialize()  
     return portfolio
 
@@ -22,9 +22,9 @@ def create_or_update_portfolio(db: Session, portfolio_data: PortfolioCreate):
         skills=json.dumps(portfolio_data.skills),
         interests=portfolio_data.interests,
         certifications=json.dumps([cert.dict() for cert in portfolio_data.certifications]),
-        github=portfolio_data.github,
-        linkedin=portfolio_data.linkedin,
-        twitter=portfolio_data.twitter
+        github=str(portfolio_data.github) if portfolio_data.github else None,
+        linkedin=str(portfolio_data.linkedin) if portfolio_data.linkedin else None,
+        twitter=str(portfolio_data.twitter) if portfolio_data.twitter else None
     )
 
     db.add(db_portfolio)
@@ -33,25 +33,23 @@ def create_or_update_portfolio(db: Session, portfolio_data: PortfolioCreate):
     db_portfolio.deserialize() 
     return db_portfolio
 
-def update_portfolio(db, portfolio_data):
+def update_portfolio(db: Session, portfolio_data: PortfolioUpdate):
     db_portfolio = get_portfolio(db)
     if not db_portfolio:
         return None
 
-    # Update fields and serialize lists if needed
     for field, value in portfolio_data.dict(exclude_unset=True).items():
         if field in ["education", "work_experience", "certifications"]:
             if value and isinstance(value, list):
-                # Ensure each item in the list is a dictionary
                 value = json.dumps([item.dict() if hasattr(item, "dict") else item for item in value])
         elif field == "skills":
-            # Serialize skills as JSON if it is a list
             value = json.dumps(value)  
+        elif isinstance(value, HttpUrl):
+            value = str(value)
         setattr(db_portfolio, field, value)
 
     db_portfolio.updated_at = datetime.utcnow()
     db.commit()
     db.refresh(db_portfolio)
-    # Deserialize JSON fields after loading
     db_portfolio.deserialize()  
     return db_portfolio

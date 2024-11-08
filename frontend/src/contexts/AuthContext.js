@@ -52,11 +52,10 @@ export const AuthProvider = ({ children }) => {
     navigate('/');  // Redirect to login after logout
   };
 
-  // Memoize isAuthenticated to prevent re-creation on every render
   const isAuthenticated = useCallback(() => {
     if (!token) return false;
     const { exp } = jwtDecode(token);
-    return Date.now() < exp * 1000; // Check if token has expired
+    return Date.now() < exp * 1000; 
   }, [token]);
 
   useEffect(() => {
@@ -64,7 +63,7 @@ export const AuthProvider = ({ children }) => {
       if (isAuthenticated()) {
         api.defaults.headers.Authorization = `Bearer ${token}`;
       } else {
-        logout();  // Logout if token is invalid/expired
+        logout(); 
       }
     }
   }, [token, isAuthenticated]);
