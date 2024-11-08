@@ -7,7 +7,7 @@ const Awards = () => {
     const { certifications } = portfolio;
     return (
         <ResumeSection id="awards" title="Awards & Certifications">
-            <ul lassName="fa-ul mb-0">
+            <ul className="fa-ul mb-0">
                 {certifications.map((certification) => (
                     <li key={certification.name}>
                         <a href={certification.url} target="_blank" rel="noopener noreferrer">

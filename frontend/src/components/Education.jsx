@@ -9,7 +9,7 @@ const Education = () => {
 
         <ResumeSection id="education" title="Education">
             {education.map((edu) => (
-                <div className="d-flex flex-column flex-md-row justify-content-between mb-5">
+                <div key={edu.gpa+1} className="d-flex flex-column flex-md-row justify-content-between mb-5">
                     <div className="flex-grow-1">
                         <h3 className="mb-0">{edu.school_name}</h3>
                         <div className="subheading mb-3">{edu.degree_name}</div>

@@ -9,7 +9,7 @@ const Experience = () => {
         <ResumeSection id="experience" title="Experience">
             {
                 work_experience.map((exp) => (
-                    <div className="d-flex flex-column flex-md-row justify-content-between mb-5">
+                    <div key={exp.role}className="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div className="flex-grow-1">
                             <h3 className="mb-0">{exp.role}</h3>
                             <div className="subheading mb-3">{exp.company_name}</div>

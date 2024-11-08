@@ -6,8 +6,8 @@ import { useAuth } from '../contexts/AuthContext';
 const Auth = () => {
   const { login, loading, isAuthenticated } = useAuth(); 
 
-  const [email, setEmail] = useState('johndoe@example.com');
-  const [password, setPassword] = useState('password123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -45,17 +45,18 @@ const Auth = () => {
 
 
       <form onSubmit={handleSubmit}>
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+        <h1 className="h3 my-4 fw-normal">Please sign in</h1>
+        <span>Email:<b>&nbsp;johndoe@example.com</b>  <br /> password:<b>&nbsp;password123</b></span>
 
-        <div class="form-floating">
-          <input type="email" class="form-control"
+        <div className="form-floating">
+          <input type="email" className="form-control"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required />
         </div>
-        <div class="form-floating">
-          <input type="password" class="form-control"
+        <div className="form-floating mt-2">
+          <input type="password" className="form-control"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -63,8 +64,8 @@ const Auth = () => {
         </div>
         {error && <p className="bold text-danger">{error}</p>}
 
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-        <p class="mt-5 mb-3 text-muted"> Back to <Link to="/">home</Link></p>
+        <button className="w-100 btn btn-lg btn-primary" type="submit" disabled={loading}>{loading?'Loading...':'Sign in'}</button>
+        <p className="mt-5 mb-3 text-muted"> Back to <Link to="/">home</Link></p>
       </form>
 
 

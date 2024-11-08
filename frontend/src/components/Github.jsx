@@ -15,6 +15,7 @@ const Github = ({ url }) => {
             console.log('Fetching GitHub data for:', username);
             fetchGitHubUserData(username);
             fetchGitHubUserRepos(username, 1);
+            console.log('GitHub data fetched');
             setDataLoaded(true);
         }
     }, [username]);

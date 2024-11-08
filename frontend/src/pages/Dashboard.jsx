@@ -61,7 +61,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (username && initialLoad) {
       fetchGitHubUserData(username);
-      fetchGitHubUserRepos(username, 1); 
+      fetchGitHubUserRepos(username, 1);
       setInitialLoad(false);
     }
   }, [username, initialLoad, fetchGitHubUserData, fetchGitHubUserRepos]);
@@ -187,9 +187,6 @@ const Dashboard = () => {
                     onChange={(e) => handleInputChange('location', e.target.value)}
                     required
                   />
-                  <div className="invalid-feedback">
-                    Please enter a valid location
-                  </div>
                 </div>
 
                 <div className="col-12">
@@ -205,13 +202,10 @@ const Dashboard = () => {
                     onChange={(e) => handleInputChange('about', e.target.value)}
                     required
                   />
-                  <div className="invalid-feedback">
-                    Please enter a valid location
-                  </div>
                 </div>
 
 
-                <div className="col-12 mb-4">
+                <div className="col-12">
 
                   <label className="form-label">Interests</label>
                   <textarea
@@ -222,7 +216,7 @@ const Dashboard = () => {
                   />
 
                 </div>
-                <div className="col-12 mb-4">
+                <div className="col-12">
                   <label>Skills</label>
                   <Select
                     options={skillOptions}
@@ -233,6 +227,52 @@ const Dashboard = () => {
                     className="multi-select"
                   />
                 </div>
+
+                <div className="row g-3  mb-4">
+                  <div className="col-4">
+                    <label htmlFor="github" className="form-label">
+                      Github
+                    </label>
+                    <input
+                      type="url"
+                      className="form-control"
+                      id="github"
+                      placeholder="Github"
+                      value={portfolio.github}
+                      onChange={(e) => handleInputChange('github', e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="col-4">
+                    <label htmlFor="linkedin" className="form-label">
+                      Linkedin
+                    </label>
+                    <input
+                      type="url"
+                      className="form-control"
+                      id="linkedin"
+                      placeholder="Linkedin"
+                      value={portfolio.linkedin}
+                      onChange={(e) => handleInputChange('linkedin', e.target.value)}
+                      required
+                    />
+                  </div>                  <div className="col-4">
+                    <label htmlFor="twitter" className="form-label">
+                      X(formerly Twitter)
+                    </label>
+                    <input
+                      type="url"
+                      className="form-control"
+                      id="twitter"
+                      placeholder="Github"
+                      value={portfolio.twitter}
+                      onChange={(e) => handleInputChange('twitter', e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+
+
               </div>
               <EducationInput
                 education={portfolio.education || []}
