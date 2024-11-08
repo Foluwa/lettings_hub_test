@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from app.api.v1.api import router as api_router
 from app.db.init_db import init_db
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
+# from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 origins = [
@@ -18,7 +18,7 @@ app.add_middleware(
 )
 
 # Mount the React `build` directory as static files
-app.mount("/", StaticFiles(directory="frontend/build", html=True), name="static")
+# app.mount("/", StaticFiles(directory="frontend/build", html=True), name="static")
 
 
 # Initialize the database
